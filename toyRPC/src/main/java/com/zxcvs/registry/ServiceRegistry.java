@@ -74,7 +74,7 @@ public class ServiceRegistry {
             });
             latch.await();
         } catch (IOException | InterruptedException e) {
-            log.error("connect server error: ", e);
+            log.error("connect server error: {}", e);
         }
         return zk;
     }
@@ -92,7 +92,7 @@ public class ServiceRegistry {
                 zk.create(Constant.ZK_REGISTRY_PATH, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
         } catch (KeeperException | InterruptedException e) {
-            log.error("add root node error: ", e);
+            log.error("add root node error: {}", e);
         }
     }
 
@@ -108,7 +108,7 @@ public class ServiceRegistry {
             String path = zk.create(Constant.ZK_DATA_PATH, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
             log.debug("create zookeeper node ({} => {})", path, data);
         } catch (KeeperException | InterruptedException e) {
-            log.error("add root node error: ", e);
+            log.error("add root node error: {}", e);
         }
     }
 
