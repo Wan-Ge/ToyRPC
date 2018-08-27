@@ -16,6 +16,9 @@
  */
 package com.zxcvs.protocol;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * RPC request
  *
@@ -23,12 +26,17 @@ package com.zxcvs.protocol;
  * Create at 2018/8/27 13:51
  */
 
+@Data
+@NoArgsConstructor
 public class RpcRequest {
+
     private String requestId;
+
     private String className;
+
     private String methodName;
+
     private Class<?>[] paramTypes;
+
     private Object[] params;
-
-
 }
