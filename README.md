@@ -8,4 +8,9 @@ A toy RPC  framework based on Netty, ZooKeeper and Spring.
 
 ## TODO
 
-:ballot_box_with_check: Support multiple serialization methods.
+- [ ] Support multiple serialization methods.
+
+## License
+
+Apache 2.0 License
+
