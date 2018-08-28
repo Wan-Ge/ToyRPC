@@ -19,13 +19,10 @@ package com.zxcvs.server;
 import com.alibaba.fastjson.JSON;
 import com.zxcvs.protocol.RpcRequest;
 import com.zxcvs.protocol.RpcResponse;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import lombok.experimental.var;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import net.sf.cglib.reflect.FastClass;
 import net.sf.cglib.reflect.FastMethod;
 
@@ -78,7 +75,7 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
         Object[] params = request.getParams();
 
         log.debug("ClassName: {}, methodName: {}", serviceClass.getName(), methodName);
-        log.debug("params: {}, {}", JSON.toJSONString(paramTypes), JSON.toJSONString(params));
+        log.debug("params:[{}, {}]", JSON.toJSONString(paramTypes), JSON.toJSONString(params));
 
         // cglib reflect
         final FastClass serviceFastClass = FastClass.create(serviceClass);
