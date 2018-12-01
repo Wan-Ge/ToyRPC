@@ -37,11 +37,11 @@ import java.util.Map;
  */
 
 @Slf4j
-public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
+public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     private final Map<String, Object> handlerMap;
 
-    public RpcHandler(Map<String, Object> handlerMap) {
+    public RpcServerHandler(Map<String, Object> handlerMap) {
         this.handlerMap = handlerMap;
     }
 
@@ -64,6 +64,13 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
         });
     }
 
+    /**
+     * handle rpc request
+     *
+     * @param request request for client
+     * @return result of method invoke
+     * @throws InvocationTargetException catch by caller
+     */
     private Object handle(RpcRequest request) throws InvocationTargetException {
         String className = request.getClassName();
         Object serviceBean = handlerMap.get(className);
@@ -83,6 +90,9 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
         return method.invoke(serviceBean, params);
     }
 
+    /**
+     * override exception caught, consider whether should deprecated
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("server caught exception: {}", cause);

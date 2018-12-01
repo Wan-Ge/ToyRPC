@@ -40,7 +40,10 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * RPC Server
@@ -76,6 +79,9 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
         this.serviceRegistry = serviceRegistry;
     }
 
+    /**
+     * load all service to server
+     */
     @Override
     public void setApplicationContext(ApplicationContext ctx) throws BeansException {
         Map<String, Object> serviceBeanMap = ctx.getBeansWithAnnotation(ToyRpcService.class);
@@ -93,7 +99,10 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
         start();
     }
 
-    private void start() throws Exception {
+    /**
+     * start server
+     */
+    public void start() throws Exception {
         if (leaderGroup == null && workersGroup == null) {
             leaderGroup = new NioEventLoopGroup();
             workersGroup = new NioEventLoopGroup();
@@ -106,7 +115,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                                     .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
                                     .addLast(new RpcDecoder(RpcRequest.class))
                                     .addLast(new RpcEncoder(RpcResponse.class))
-                                    .addLast(new RpcHandler(handlerMap));
+                                    .addLast(new RpcServerHandler(handlerMap));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
@@ -133,6 +142,13 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
         }
     }
 
+    /**
+     * add new service
+     *
+     * @param interfaceName interface name
+     * @param serviceBean   instance
+     * @return the server after add service
+     */
     public RpcServer addService(String interfaceName, Object serviceBean) {
         if (!handlerMap.containsKey(interfaceName)) {
             log.info("Loading service: {}", interfaceName);
@@ -142,6 +158,9 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
         return this;
     }
 
+    /**
+     * submit task for execute
+     */
     public static void submit(Runnable task) {
         if (threadPoolExecutor == null) {
             synchronized (RpcServer.class) {
@@ -157,6 +176,9 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
         threadPoolExecutor.submit(task);
     }
 
+    /**
+     * stop server
+     */
     public void stop() {
         if (leaderGroup != null) {
             leaderGroup.shutdownGracefully();
