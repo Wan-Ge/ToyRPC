@@ -16,7 +16,6 @@
  */
 package com.zxcvs.registry;
 
-import com.sun.istack.internal.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
@@ -37,7 +36,7 @@ public class ServiceRegistry {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
-    @NotNull private String registryAddress;
+    private String registryAddress;
 
     public ServiceRegistry(String registryAddress) {
         this.registryAddress = registryAddress;
