@@ -48,7 +48,7 @@ public class SerializationUtils {
      *
      * @param clazz Class of T
      * @param <T>   type of object
-     * @return      schema
+     * @return schema
      */
     @SuppressWarnings("unchecked")
     private static <T> Schema<T> getSchema(Class<T> clazz) {
@@ -64,9 +64,9 @@ public class SerializationUtils {
     /**
      * serialize (object ---> byte[])
      *
-     * @param obj   the object which needs serialize
-     * @param <T>   class type
-     * @return      byte[] - result of serialize
+     * @param obj the object which needs serialize
+     * @param <T> class type
+     * @return byte[] - result of serialize
      */
     @SuppressWarnings("unchecked")
     public static <T> byte[] serialize(T obj) {
@@ -86,10 +86,10 @@ public class SerializationUtils {
     /**
      * deserialize (byte[] ---> Object)
      *
-     * @param data    the data which needs deserialize
-     * @param clazz   template
-     * @param <T>     class type
-     * @return        Object - result of deserialize
+     * @param data  the data which needs deserialize
+     * @param clazz template
+     * @param <T>   class type
+     * @return Object - result of deserialize
      */
     public static <T> T deserialize(byte[] data, Class<T> clazz) {
         try {

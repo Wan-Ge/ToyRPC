@@ -45,7 +45,7 @@ public class RpcFuture implements Future<Object> {
     private Long startTime;
     private static final Long RESPONSE_TIME_OUT = 5000L;
 
-    private List<AsyncRPCCallback> pendingCallbacks = new ArrayList<>();
+    private List<AsyncRpcCallback> pendingCallbacks = new ArrayList<>();
     private ReentrantLock lock = new ReentrantLock();
 
     public RpcFuture(RpcRequest request) {
@@ -114,7 +114,7 @@ public class RpcFuture implements Future<Object> {
         }*/
     }
 
-    private void runCallback(final AsyncRPCCallback callback) {
+    private void runCallback(final AsyncRpcCallback callback) {
         final RpcResponse res = this.rpcResponse;
 
     }

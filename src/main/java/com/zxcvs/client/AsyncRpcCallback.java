@@ -23,7 +23,7 @@ package com.zxcvs.client;
  * Create at 2018/8/28 16:56
  */
 
-public interface AsyncRPCCallback {
+public interface AsyncRpcCallback {
 
     /**
      * @param result execute result
@@ -31,7 +31,7 @@ public interface AsyncRPCCallback {
     void success(Object result);
 
     /**
-     *
+     * fail
      */
     void fail(Exception e);
 }

@@ -45,7 +45,7 @@ public class ServiceRegistry {
     /**
      * registry to zookeeper
      *
-     * @param data  the data of node
+     * @param data the data of node
      */
     public void registry(String data) {
         if (StringUtils.isEmpty(data)) {
@@ -81,7 +81,7 @@ public class ServiceRegistry {
     /**
      * add root node if not exist
      *
-     * @param zk    current zookeeper
+     * @param zk current zookeeper
      */
     private void addRootNode(ZooKeeper zk) {
         try {
@@ -98,8 +98,8 @@ public class ServiceRegistry {
     /**
      * add node below root
      *
-     * @param zk    current zookeeper
-     * @param data  the data of node
+     * @param zk   current zookeeper
+     * @param data the data of node
      */
     private void createNode(ZooKeeper zk, String data) {
         try {
