@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -27,29 +28,22 @@ import java.util.concurrent.TimeUnit;
 @Slf4j(topic = "ServerLogger")
 public class RpcServer implements ApplicationContextAware, InitializingBean {
 
+    @Value("${server.address}")
     private String serverAddress;
 
+    @Value("${server.factory.name}")
+    private static String factoryName;
+
+    @Resource
     private ServiceRegistry serviceRegistry;
 
     private HashMap<String, Object> handlerMap = new HashMap<>();
 
     private static ThreadPoolExecutor executor;
 
-    @Resource
-    private static ServerThreadFactory threadFactory;
-
     private EventLoopGroup masterGroup = null;
 
     private EventLoopGroup workerGroup = null;
-
-    public RpcServer(String serverAddress) {
-        this.serverAddress = serverAddress;
-    }
-
-    public RpcServer(String serverAddress, ServiceRegistry serviceRegistry) {
-        this.serverAddress = serverAddress;
-        this.serviceRegistry = serviceRegistry;
-    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -73,7 +67,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             synchronized (RpcService.class) {
                 if (executor == null) {
                     executor = new ThreadPoolExecutor(16, 16, 600L, TimeUnit.SECONDS,
-                            new ArrayBlockingQueue<>(65536), threadFactory);
+                            new ArrayBlockingQueue<>(65536), new ServerThreadFactory(factoryName));
                 }
             }
         }
@@ -90,7 +84,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
     }
 
     public void start() throws Exception {
-
+        log.info("start!!!!!, and address is :{}", serverAddress);
     }
 
     public void stop() {
