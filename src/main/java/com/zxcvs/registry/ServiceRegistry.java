@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -23,12 +24,8 @@ public class ServiceRegistry {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
+    @Value("${registry.address}")
     private String registryAddress;
-
-    /** constructor */
-    public ServiceRegistry(String registryAddress) {
-        this.registryAddress = registryAddress;
-    }
 
     /** 服务注册 */
     public void register(String data) {

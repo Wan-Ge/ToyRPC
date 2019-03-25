@@ -1,7 +1,5 @@
 package com.zxcvs.common;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +12,6 @@ import java.util.concurrent.ThreadFactory;
  * Create at 2019/3/25 10:45
  */
 
-@Component
 public class ServerThreadFactory implements ThreadFactory {
 
     private int cnt;
