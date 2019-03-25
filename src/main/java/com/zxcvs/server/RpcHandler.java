@@ -36,7 +36,7 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
             try {
                 Object result = handle(request);
                 response.setResult(result);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 response.setError(ExceptionUtils.getStackTrace(e));
                 log.info("RPC server handle request error!{}", ExceptionUtils.getStackTrace(e));
             }
@@ -45,7 +45,7 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
         });
     }
 
-    private Object handle(RpcRequest request) throws Throwable {
+    private Object handle(RpcRequest request) throws Exception {
         String className = request.getClassName();
         Object serviceBean = handlerMap.get(className);
 
