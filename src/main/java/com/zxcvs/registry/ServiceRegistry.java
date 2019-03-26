@@ -47,7 +47,7 @@ public class ServiceRegistry {
                     latch.countDown();
                 }
             });
-            latch.wait();
+            latch.await();
         } catch (IOException | InterruptedException e) {
             log.error(ExceptionUtils.getStackTrace(e));
         }
