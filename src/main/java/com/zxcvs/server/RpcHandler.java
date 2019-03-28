@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * Create at 2019/3/25 17:14
  */
 
-@Slf4j(topic = "ServerLogger")
+@Slf4j(topic = "ToyLogger")
 public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     private final Map<String, Object> handlerMap;

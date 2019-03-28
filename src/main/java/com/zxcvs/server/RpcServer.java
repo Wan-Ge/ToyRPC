@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Component
-@Slf4j(topic = "ServerLogger")
+@Slf4j(topic = "ToyLogger")
 public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     @Value("${server.address}")

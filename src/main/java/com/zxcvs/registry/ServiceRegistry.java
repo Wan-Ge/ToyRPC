@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch;
  */
 
 @Component
-@Slf4j(topic = "RegistryLogger")
+@Slf4j(topic = "ToyLogger")
 public class ServiceRegistry {
 
     private CountDownLatch latch = new CountDownLatch(1);

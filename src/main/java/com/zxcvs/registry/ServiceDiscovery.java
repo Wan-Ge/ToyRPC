@@ -1,6 +1,6 @@
 package com.zxcvs.registry;
 
-import com.zxcvs.ConnectManager;
+import com.zxcvs.client.ConnectManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.zookeeper.KeeperException;
@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 
 @Component
-@Slf4j(topic = "ServerLogger")
+@Slf4j(topic = "ToyLogger")
 public class ServiceDiscovery {
 
     private CountDownLatch latch = new CountDownLatch(1);
