@@ -1,6 +1,5 @@
 package com.zxcvs.client;
 
-import com.zxcvs.ConnectManager;
 import com.zxcvs.client.proxy.AsyncObjectProxy;
 import com.zxcvs.client.proxy.AsyncObjectProxyImpl;
 import com.zxcvs.common.ServerThreadFactory;
