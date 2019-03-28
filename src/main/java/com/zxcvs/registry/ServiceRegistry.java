@@ -3,7 +3,11 @@ package com.zxcvs.registry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.zookeeper.*;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.Watcher.Event.KeeperState;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -42,8 +46,8 @@ public class ServiceRegistry {
     private ZooKeeper connectServer() {
         ZooKeeper zk = null;
         try {
-            zk = new ZooKeeper(registryAddress, Constants.ZK_SESSION_TIMEOUT, watchedEvent -> {
-                if (watchedEvent.getState() == Watcher.Event.KeeperState.SyncConnected) {
+            zk = new ZooKeeper(registryAddress, Constants.ZK_SESSION_TIMEOUT, event -> {
+                if (event.getState() == KeeperState.SyncConnected) {
                     latch.countDown();
                 }
             });
