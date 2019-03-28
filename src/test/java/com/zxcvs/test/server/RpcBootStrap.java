@@ -1,4 +1,4 @@
-package com.zxcvs.test;
+package com.zxcvs.test.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
