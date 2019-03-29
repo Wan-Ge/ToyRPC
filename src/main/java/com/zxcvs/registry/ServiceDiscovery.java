@@ -34,7 +34,10 @@ public class ServiceDiscovery {
     private ZooKeeper zooKeeper;
 
     public ServiceDiscovery() {
-
+         zooKeeper = connectServer();
+         if (zooKeeper != null) {
+             watchNode(zooKeeper);
+         }
     }
 
     public String discover() {
