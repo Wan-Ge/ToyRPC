@@ -1,14 +1,20 @@
 package com.zxcvs.client;
 
 import com.zxcvs.common.ServerThreadFactory;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -87,17 +93,100 @@ public class ConnectManager {
             }
 
             // close and remove invalid server nodes
-            for (RpcClientHandler handler : connectedHandlers) {
-
+            for (RpcClientHandler connectedServerHandler : connectedHandlers) {
+                SocketAddress remotePeer = connectedServerHandler.getRemotePeer();
+                if (!newAllServerNodeSet.contains(remotePeer)) {
+                    log.info("remove invalid server node:{}", remotePeer);
+                    RpcClientHandler handler = connectedServerNodes.get(remotePeer);
+                    if (handler != null) {
+                        handler.close();
+                    }
+                    connectedServerNodes.remove(remotePeer);
+                    connectedHandlers.remove(connectedServerHandler);
+                }
             }
+        } else { // No available server node (All server nodes are down)
+            log.error("No available server node, All server nodes are down.");
+            for (final RpcClientHandler connectedServerHandler : connectedHandlers) {
+                SocketAddress remotePeer = connectedServerHandler.getRemotePeer();
+                RpcClientHandler handler = connectedServerNodes.get(remotePeer);
+                handler.close();
+                connectedServerNodes.remove(connectedServerHandler);
+            }
+            connectedHandlers.clear();
         }
     }
 
-    private void connectServerNode(InetSocketAddress serverNodeAddress) {
+    public void reconnect(final RpcClientHandler handler, final SocketAddress remotePeer) {
+        if (handler != null) {
+            connectedHandlers.remove(handler);
+            connectedServerNodes.remove(handler.getRemotePeer());
+        }
+        connectServerNode((InetSocketAddress) remotePeer);
+    }
 
+    private void connectServerNode(final InetSocketAddress remotePeer) {
+        executor.submit(() -> {
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).handler(new RpcClientInitializer());
+            ChannelFuture channelFuture = bootstrap.connect(remotePeer);
+            channelFuture.addListener((ChannelFutureListener) channelFuture1 -> {
+                if (channelFuture1.isSuccess()) {
+                    log.info("successfully connect to remote server, remote peer:{}", remotePeer);
+                    RpcClientHandler handler = channelFuture1.channel().pipeline().get(RpcClientHandler.class);
+                    addHandler(handler);
+                }
+            });
+        });
+    }
+
+    private void addHandler(RpcClientHandler handler) {
+        connectedHandlers.add(handler);
+        InetSocketAddress remoteAddress = (InetSocketAddress) handler.getChannel().remoteAddress();
+        connectedServerNodes.put(remoteAddress, handler);
+        signalAvailableHandler();
+    }
+
+    private void signalAvailableHandler() {
+        lock.lock();
+        try {
+            connected.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private boolean waitingForHandler() throws InterruptedException {
+        lock.lock();
+        try {
+            return connected.await(connectTimeoutMillis, TimeUnit.MILLISECONDS);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public RpcClientHandler chooseHandler() {
+        int size = connectedHandlers.size();
+        while (isRunning && size <= 0) {
+            try {
+                boolean available = waitingForHandler();
+                if (available) {
+                    size = connectedHandlers.size();
+                }
+            } catch (InterruptedException e) {
+                log.error("waiting for available node is interrupted.{}", ExceptionUtils.getStackTrace(e));
+                throw new RuntimeException("can't connect any servers.", e);
+            }
+        }
+        int index = (roundRobin.getAndAdd(1) + size) % size;
+        return connectedHandlers.get(index);
     }
 
     public void stop() {
-
+        isRunning = false;
+        connectedHandlers.forEach(RpcClientHandler::close);
+        signalAvailableHandler();
+        executor.shutdown();
+        eventLoopGroup.shutdownGracefully();
     }
 }
