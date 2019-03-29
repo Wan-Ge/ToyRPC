@@ -12,7 +12,11 @@ public class RpcResponse {
 
     private String requestId;
 
-    private String error;
+    private boolean error;
+
+    private String errorMsg;
+
+    private Throwable throwable;
 
     private Object result;
 
