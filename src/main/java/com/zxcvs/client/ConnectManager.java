@@ -130,10 +130,10 @@ public class ConnectManager {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).handler(new RpcClientInitializer());
             ChannelFuture channelFuture = bootstrap.connect(remotePeer);
-            channelFuture.addListener((ChannelFutureListener) channelFuture1 -> {
-                if (channelFuture1.isSuccess()) {
+            channelFuture.addListener((ChannelFutureListener) future -> {
+                if (future.isSuccess()) {
                     log.info("successfully connect to remote server, remote peer:{}", remotePeer);
-                    RpcClientHandler handler = channelFuture1.channel().pipeline().get(RpcClientHandler.class);
+                    RpcClientHandler handler = future.channel().pipeline().get(RpcClientHandler.class);
                     addHandler(handler);
                 }
             });

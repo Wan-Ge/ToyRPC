@@ -28,16 +28,16 @@ public class ServiceDiscovery {
 
     private volatile List<String> dataList = new ArrayList<>();
 
-    @Value("${registry.address}")
     private String registryAddress;
 
     private ZooKeeper zooKeeper;
 
-    public ServiceDiscovery() {
-         zooKeeper = connectServer();
-         if (zooKeeper != null) {
-             watchNode(zooKeeper);
-         }
+    public ServiceDiscovery(@Value("${registry.address}") String registryAddress) {
+        this.registryAddress = registryAddress;
+        zooKeeper = connectServer();
+        if (zooKeeper != null) {
+            watchNode(zooKeeper);
+        }
     }
 
     public String discover() {
