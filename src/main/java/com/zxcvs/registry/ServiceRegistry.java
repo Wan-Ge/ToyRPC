@@ -35,7 +35,7 @@ public class ServiceRegistry {
     public void register(String data) {
         if (StringUtils.isNotEmpty(data)) {
             ZooKeeper zk = connectServer();
-            if (zk == null) {
+            if (zk != null) {
                 // add root node if not exist
                 addRootNode(zk);
                 createNode(zk, data);
