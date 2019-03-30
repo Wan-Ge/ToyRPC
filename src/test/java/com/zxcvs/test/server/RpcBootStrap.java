@@ -1,18 +1,14 @@
 package com.zxcvs.test.server;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Xiaohui Yang
  * Create at 2019/3/24 16:23
  */
 
-@Component
-@ComponentScan(basePackages = "com.zxcvs.*")
-@PropertySource({"classpath:rpc.properties"})
+@SpringBootApplication(scanBasePackages = {"com.zxcvs"})
 public class RpcBootStrap {
     public static void main(String[] args) {
         SpringApplication.run(RpcBootStrap.class);

@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Component
-@ComponentScan(basePackages = "com.zxcvs")
+@ComponentScan(basePackages = "com.zxcvs.registry")
 public class RpcClient {
 
     @Value("${client.factory.name}")
