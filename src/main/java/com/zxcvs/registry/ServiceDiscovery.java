@@ -20,8 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * Create at 2019/3/28 13:37
  */
 
-@Slf4j(topic = "ToyLogger")
 @Component
+@Slf4j(topic = "ToyLogger")
 public class ServiceDiscovery {
 
     private CountDownLatch latch = new CountDownLatch(1);
@@ -93,7 +93,7 @@ public class ServiceDiscovery {
     }
 
     private void updateConnectedServer() {
-        ConnectManager.getInstance().updateConnectedServer(this.dataList);
+        ConnectManager.getInstance().updateConnectedServer(dataList);
     }
 
     public void stop() {

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -38,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j(topic = "ToyLogger")
+@ComponentScan(basePackages = "com.zxcvs")
 public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     @Value("${server.address}")
@@ -100,16 +102,17 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             masterGroup = new NioEventLoopGroup();
             workerGroup = new NioEventLoopGroup();
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(masterGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                protected void initChannel(SocketChannel channel) {
-                    channel.pipeline()
-                            .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
-                            .addLast(new RpcDecoder(RpcRequest.class))
-                            .addLast(new RpcEncoder(RpcResponse.class))
-                            .addLast(new RpcHandler(handlerMap));
-                }
-            }).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
+            bootstrap.group(masterGroup, workerGroup).channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel channel) {
+                            channel.pipeline()
+                                    .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
+                                    .addLast(new RpcDecoder(RpcRequest.class))
+                                    .addLast(new RpcEncoder(RpcResponse.class))
+                                    .addLast(new RpcHandler(handlerMap));
+                        }
+                    }).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
 
             String[] array = serverAddress.split(":");
             String host = array[0];

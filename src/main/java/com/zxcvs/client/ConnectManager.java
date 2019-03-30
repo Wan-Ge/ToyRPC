@@ -105,7 +105,7 @@ public class ConnectManager {
                     connectedHandlers.remove(connectedServerHandler);
                 }
             }
-        } else { // No available server node (All server nodes are down)
+        } else {
             log.error("No available server node, All server nodes are down.");
             for (final RpcClientHandler connectedServerHandler : connectedHandlers) {
                 SocketAddress remotePeer = connectedServerHandler.getRemotePeer();

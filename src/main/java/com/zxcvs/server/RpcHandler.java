@@ -1,5 +1,6 @@
 package com.zxcvs.server;
 
+import com.zxcvs.exception.RpcNoSuchMethodException;
 import com.zxcvs.protocol.RpcRequest;
 import com.zxcvs.protocol.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
@@ -40,7 +41,9 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
                 response.setError(false);
                 response.setErrorMsg("Handler Error");
                 response.setThrowable(e);
-                log.info("RPC server handle request error!{}", ExceptionUtils.getStackTrace(e));
+                if (!(e instanceof RpcNoSuchMethodException)) {
+                    log.info("RPC server handle request error!{}", ExceptionUtils.getStackTrace(e));
+                }
             }
             context.writeAndFlush(response).addListener((ChannelFutureListener) channelFuture -> log.info("send " +
                     "response for request:{}", request.getRequestId()));
@@ -50,6 +53,14 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
     private Object handle(RpcRequest request) throws Exception {
         String className = request.getClassName();
         Object serviceBean = handlerMap.get(className);
+
+        // No such method handle
+        if (serviceBean == null) {
+            log.warn("No such method,requestId:{},classFullName:{}", request.getRequestId(),
+                    request.getClassName() + request.getMethodName());
+            throw new RpcNoSuchMethodException(request.getRequestId(),
+                    request.getClassName() + request.getMethodName());
+        }
 
         Class<?> serviceClass = serviceBean.getClass();
         String methodName = request.getMethodName();
