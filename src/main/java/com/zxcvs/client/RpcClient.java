@@ -36,11 +36,11 @@ public class RpcClient {
     @SuppressWarnings("unchecked")
     public static <T> T create(Class<T> interfaceClass) {
         return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass},
-                new AsyncObjectProxyImpl<T>(interfaceClass));
+                new AsyncObjectProxyImpl<>(interfaceClass));
     }
 
     public static <T>AsyncObjectProxy createAsync(Class<T> interfaceClass) {
-        return new AsyncObjectProxyImpl<T>(interfaceClass);
+        return new AsyncObjectProxyImpl<>(interfaceClass);
     }
 
     public static void submit(Runnable task) {

@@ -20,8 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * Create at 2019/3/28 13:37
  */
 
-@Component
 @Slf4j(topic = "ToyLogger")
+@Component
 public class ServiceDiscovery {
 
     private CountDownLatch latch = new CountDownLatch(1);
