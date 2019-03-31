@@ -7,8 +7,17 @@ package com.zxcvs.client;
 
 public interface AsyncRpcCallBack {
 
+    /**
+     * success to get result of invoke
+     *
+     * @param result invoke result
+     */
     void success(Object result);
 
+    /**
+     * failed to invoke method
+     * @param e cause
+     */
     void fail(Exception e);
 
 }
