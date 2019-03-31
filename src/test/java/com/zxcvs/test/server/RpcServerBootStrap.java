@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication(scanBasePackages = {"com.zxcvs"})
-public class RpcBootStrap {
+public class RpcServerBootStrap {
     public static void main(String[] args) {
-        SpringApplication.run(RpcBootStrap.class);
+        SpringApplication.run(RpcServerBootStrap.class);
     }
 }

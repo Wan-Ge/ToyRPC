@@ -22,7 +22,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -39,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j(topic = "ToyLogger")
-@ComponentScan(basePackages = "com.zxcvs")
 public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     @Value("${server.address}")
