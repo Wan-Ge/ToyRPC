@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
  */
 
 @Slf4j(topic = "ToyLogger")
-public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
+public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
     private final Map<String, Object> handlerMap;
 
-    public RpcHandler(Map<String, Object> handlerMap) {
+    public RpcServerHandler(Map<String, Object> handlerMap) {
         this.handlerMap = handlerMap;
     }
 
