@@ -28,8 +28,8 @@
     </parent>
 
     <groupId>com.zxcvs</groupId>
-    <artifactId>ToyRPC</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>toy-rpc</artifactId>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <name>ToyRPC</name>
     <description>A toy RPC framework based on Netty, ZooKeeper and Spring.</description>
