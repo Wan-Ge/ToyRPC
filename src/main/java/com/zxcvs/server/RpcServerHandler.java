@@ -56,8 +56,8 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
         // No such method handle
         if (serviceBean == null) {
-            log.warn("No such method,requestId:{},classFullName:{}", request.getRequestId(),
-                    request.getClassName() + request.getMethodName());
+            log.warn("No such method:{},requestId:{},classFullName:{}", request.getMethodName(), request.getRequestId(),
+                    request.getClassName());
             throw new RpcNoSuchMethodException(request.getRequestId(),
                     request.getClassName() + request.getMethodName());
         }
