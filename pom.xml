@@ -30,8 +30,9 @@
     <groupId>com.zxcvs</groupId>
     <artifactId>ToyRPC</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>ToyRPC</name>
-    <description>A toy RPC  framework based on Netty, ZooKeeper and Spring.</description>
+    <description>A toy RPC framework based on Netty, ZooKeeper and Spring.</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -114,20 +115,6 @@
             <version>2.6</version>
         </dependency>
 
-        <!--&lt;!&ndash; Slf4j &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-api</artifactId>-->
-            <!--<version>${slf4j.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>slf4j-log4j12</artifactId>-->
-            <!--<version>${slf4j.version}</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-
-
     </dependencies>
 
     <build>
@@ -135,6 +122,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
         </plugins>
     </build>
