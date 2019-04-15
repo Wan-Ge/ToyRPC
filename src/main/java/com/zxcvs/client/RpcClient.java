@@ -5,6 +5,7 @@ import com.zxcvs.client.proxy.AsyncObjectProxyImpl;
 import com.zxcvs.common.ServerThreadFactory;
 import com.zxcvs.registry.ServiceDiscovery;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Component
+@ComponentScan(basePackages = "com.zxcvs.registry")
 public class RpcClient {
 
     @Value("${client.factory.name}")
