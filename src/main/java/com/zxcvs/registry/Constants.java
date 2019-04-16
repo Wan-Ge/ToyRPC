@@ -19,22 +19,7 @@ public class Constants {
     public static final String ZK_DATA_PATH = ZK_REGISTRY_PATH + "/data";
 
     /** ZK 注册地址 */
-    public static final String ZK_REGISTRY_ADDRESS = "127.0.0.1:2181";
+    public static final String ZK_REGISTRY_ADDRESS = "120.24.63.84:2181";
 
     public static final String SERVER_ADDRESS = "127.0.0.1:18866";
-
-
-    /*
-    * # zookeeper server
-toyrpc.registry.address=127.0.0.1:2181
-
-# rpc server
-toyrpc.server.address=127.0.0.1:18866
-
-# thread pool factory names
-toyrpc.server.factory.name=Server
-toyrpc.connectManager.factory.name=ConnectManager
-toyrpc.client.factory.name=Client
-    *
-    * */
 }
