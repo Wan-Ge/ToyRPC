@@ -6,7 +6,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -28,12 +27,11 @@ public class ServiceDiscovery {
 
     private volatile List<String> dataList = new ArrayList<>();
 
-    private String registryAddress;
+    private String registryAddress = Constants.ZK_REGISTRY_ADDRESS;
 
     private ZooKeeper zooKeeper;
 
-    public ServiceDiscovery(@Value("${registry.address}") String registryAddress) {
-        this.registryAddress = registryAddress;
+    public ServiceDiscovery() {
         zooKeeper = connectServer();
         if (zooKeeper != null) {
             watchNode(zooKeeper);

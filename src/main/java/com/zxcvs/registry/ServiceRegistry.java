@@ -9,7 +9,6 @@ import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -28,8 +27,7 @@ public class ServiceRegistry {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
-    @Value("${registry.address}")
-    private String registryAddress;
+    private String registryAddress = Constants.ZK_REGISTRY_ADDRESS;
 
     /** 服务注册 */
     public void register(String data) {

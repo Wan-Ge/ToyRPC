@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -32,8 +31,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @NoArgsConstructor
 public class ConnectManager {
 
-    @Value("${connectManager.factory.name}")
-    private static String factoryName;
+    private static String factoryName = "ConnectManager";
 
     private volatile static ConnectManager connectManager;
 

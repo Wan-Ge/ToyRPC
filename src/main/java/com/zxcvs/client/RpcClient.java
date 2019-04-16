@@ -4,7 +4,6 @@ import com.zxcvs.client.proxy.AsyncObjectProxy;
 import com.zxcvs.client.proxy.AsyncObjectProxyImpl;
 import com.zxcvs.common.ServerThreadFactory;
 import com.zxcvs.registry.ServiceDiscovery;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
@@ -23,11 +22,7 @@ import java.util.concurrent.TimeUnit;
 @ComponentScan(basePackages = "com.zxcvs.registry")
 public class RpcClient {
 
-    @Value("${client.factory.name}")
-    private static String factoryName;
-
-    @Value("${server.address}")
-    private String serverAddress;
+    private static String factoryName = "Client";
 
     @Resource
     private ServiceDiscovery serviceDiscovery;

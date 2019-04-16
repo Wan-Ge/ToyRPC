@@ -5,6 +5,7 @@ import com.zxcvs.protocol.RpcDecoder;
 import com.zxcvs.protocol.RpcEncoder;
 import com.zxcvs.protocol.RpcRequest;
 import com.zxcvs.protocol.RpcResponse;
+import com.zxcvs.registry.Constants;
 import com.zxcvs.registry.ServiceRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -19,9 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -37,14 +38,13 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Component
+@ComponentScan(basePackages = "com.zxcvs.registry")
 @Slf4j(topic = "ToyLogger")
 public class RpcServer implements ApplicationContextAware, InitializingBean {
 
-    @Value("${server.address}")
-    private String serverAddress;
+    private String serverAddress = Constants.SERVER_ADDRESS;
 
-    @Value("${server.factory.name}")
-    private static String factoryName;
+    private static String factoryName = "Server";
 
     @Resource
     private ServiceRegistry serviceRegistry;
@@ -59,6 +59,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        log.info("toy rpc is launching");
         start();
     }
 
