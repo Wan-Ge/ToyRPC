@@ -51,7 +51,8 @@ public class AsyncObjectProxyImpl<T> implements InvocationHandler, AsyncObjectPr
         request.setParameterTypes(method.getParameterTypes());
         request.setParameters(args);
 
-        log.info("invoke,className:{},methodName:{},parameterTypes:{},args:{}", method.getDeclaringClass().getName(),
+        log.info("send request:{}", request.getRequestId());
+        log.info("className:{},methodName:{},parameterTypes:{},args:{}", method.getDeclaringClass().getName(),
                 method.getName(), method.getParameterTypes(), args);
 
         RpcClientHandler handler = ConnectManager.getInstance().chooseHandler();

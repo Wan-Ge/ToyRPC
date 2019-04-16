@@ -49,6 +49,7 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
         context.close();
     }
 
+    /** 接收来自 Server 的响应 */
     @Override
     protected void channelRead0(ChannelHandlerContext context, RpcResponse response) throws Exception {
         String requestId = response.getRequestId();

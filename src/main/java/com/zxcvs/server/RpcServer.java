@@ -111,20 +111,32 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                                     .addLast(new RpcEncoder(RpcResponse.class))
                                     .addLast(new RpcServerHandler(handlerMap));
                         }
-                    }).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
+                    })
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             String[] array = serverAddress.split(":");
             String host = array[0];
             int port = Integer.parseInt(array[1]);
 
-            ChannelFuture future = bootstrap.bind(host, port).sync();
-            log.info("sever started on port:{}", port);
+            ChannelFuture future;
+            try {
+                future = bootstrap.bind(host, port).sync();
+            } catch (Exception e) {
+                log.warn("port[{}] bind failed, retry port[{}]", port, port + 1);
+                port++;
+                future = bootstrap.bind(host, port).sync();
+            }
+
+            log.info("host:{}, port[{}] bind success", host, port);
+            // replace serverAddress
+            serverAddress = host + ":" + port;
 
             if (serviceRegistry != null) {
                 serviceRegistry.register(serverAddress);
             }
 
-            future.channel().closeFuture().sync();
+            future.channel().closeFuture();
         }
     }
 
