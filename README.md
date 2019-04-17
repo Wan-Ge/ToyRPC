@@ -8,8 +8,8 @@ A toy RPC  framework based on Netty, ZooKeeper and Spring.
 
 ## TODO
 
-- [ ] Support multiple serialization methods.
-- [ ] RPC Client cancel about.
+- [ ] Service group.
+- [ ] Service invoke.
 
 ## License
 
