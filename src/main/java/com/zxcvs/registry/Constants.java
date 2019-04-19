@@ -21,5 +21,6 @@ public class Constants {
     /** ZK 注册地址 */
     public static final String ZK_REGISTRY_ADDRESS = "120.24.63.84:2181";
 
+    /** 服务器地址 */
     public static final String SERVER_ADDRESS = "127.0.0.1:18866";
 }

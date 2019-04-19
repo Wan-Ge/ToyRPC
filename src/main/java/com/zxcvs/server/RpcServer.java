@@ -89,7 +89,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     public RpcServer addService(String interfaceName, Object serviceBean) {
         if (!handlerMap.containsKey(interfaceName)) {
-            log.info("Loading service:{}", interfaceName);
+            log.info("Add and loading service:{}", interfaceName);
             handlerMap.put(interfaceName, serviceBean);
         }
 
