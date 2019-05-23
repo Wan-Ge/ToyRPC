@@ -53,7 +53,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     private static ThreadPoolExecutor executor;
 
-    private EventLoopGroup masterGroup = null;
+    private EventLoopGroup bossGroup = null;
 
     private EventLoopGroup workerGroup = null;
 
@@ -97,11 +97,11 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
     }
 
     public void start() throws Exception {
-        if (masterGroup == null && workerGroup == null) {
-            masterGroup = new NioEventLoopGroup();
+        if (bossGroup == null && workerGroup == null) {
+            bossGroup = new NioEventLoopGroup();
             workerGroup = new NioEventLoopGroup();
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(masterGroup, workerGroup).channel(NioServerSocketChannel.class)
+            bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel channel) {
@@ -141,8 +141,8 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
     }
 
     public void stop() {
-        if (masterGroup != null) {
-            masterGroup.shutdownGracefully();
+        if (bossGroup != null) {
+            bossGroup.shutdownGracefully();
         }
         if (workerGroup != null) {
             workerGroup.shutdownGracefully();
